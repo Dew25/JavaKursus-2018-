@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>AJAX example</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+           var xhr=new XMLHttpRequest();
+           xhr.onreadystatechange=dataReceived;
+           function calculate(){
+               var parameters=
+                 "number1="+document.getElementById("number1").value +
+                 "&number2="+document.getElementById("number2").value;
+               xhr.open("POST", "servlet1", true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send(parameters);
+           }
+           function dataReceived(){
+                document.getElementById("answer").innerHTML=xhr.responseText;              
+           }
+        </script>
+    </head>
+    <body>
+        <input type="number" id="number1" /> x 
+        <input type="number" id="number2" /> 
+        <input type="button" value="=" onclick="calculate()"/>
+        <span id="answer">Answer place</span>
+    </body>
+</html>

@@ -1,0 +1,58 @@
+CREATE TABLE dogbreeds(
+   dogbreed VARCHAR(50) NOT NULL PRIMARY KEY,
+   maxlifespan INT
+);
+
+CREATE TABLE dogs(
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  dogname VARCHAR(50),
+  dogbreed VARCHAR(50),
+  FOREIGN KEY(dogbreed) REFERENCES dogbreeds(dogbreed)
+);
+
+INSERT INTO dogbreeds VALUES ('Akita', 12);
+INSERT INTO dogbreeds VALUES ('Bulldog', 12);
+INSERT INTO dogbreeds VALUES ('Dalmatian', 16);
+INSERT INTO dogbreeds VALUES ('Dachshund', 15);
+
+INSERT INTO dogs VALUES (DEFAULT, 'Jack', 'Bulldog');
+INSERT INTO dogs VALUES (DEFAULT, 'Rocky', 'Dalmatian');
+INSERT INTO dogs VALUES (DEFAULT, 'Sam', 'Dachshund');
+INSERT INTO dogs VALUES (DEFAULT, 'Jack', 'Dalmatian');
+INSERT INTO dogs VALUES (DEFAULT, 'Leo', 'Dachshund');
+INSERT INTO dogs VALUES (DEFAULT, 'Sam', 'Bulldog');
+INSERT INTO dogs VALUES (DEFAULT, 'Oscar', 'Bulldog');
+
+SELECT dogbreed, maxlifespan FROM dogbreeds WHERE maxlifespan>12;
+
+SELECT dogbreed, 
+   (SELECT COUNT(*) FROM dogs 
+      WHERE dogs.dogbreed=dogbreeds.dogbreed) AS n
+  FROM dogbreeds;
+
+SELECT dogbreed FROM  dogs WHERE dogname='Jack';
+ Bulldog, Dalmatian
+
+SELECT dogname FROM dogs WHERE dogbreed IN ('Bulldog', 'Dalmatian');
+
+SELECT dogname FROM dogs WHERE dogbreed IN 
+  (SELECT dogbreed FROM  dogs WHERE dogname='Jack');
+
+SELECT GROUP_CONCAT(DISTINCT dogname) FROM dogs WHERE dogbreed IN 
+  (SELECT dogbreed FROM  dogs WHERE dogname='Jack');
+
+SELECT dogname FROM dogs;
+
+SELECT dogname,
+  (SELECT GROUP_CONCAT(DISTINCT dogname) 
+    FROM dogs WHERE dogbreed IN 
+  (SELECT dogbreed FROM  dogs WHERE dogs.dogname=t1.dogname))
+  FROM dogs AS t1;
+
+
+SELECT DISTINCT dogname,
+  (SELECT GROUP_CONCAT(DISTINCT dogname) 
+    FROM dogs WHERE dogbreed IN 
+  (SELECT dogbreed FROM  dogs WHERE dogs.dogname=t1.dogname)
+   AND NOT dogs.dogname=t1.dogname)
+  FROM dogs AS t1;

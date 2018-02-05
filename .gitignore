@@ -1,0 +1,12 @@
+/p1/build
+/p1/dist
+/p1/nbproject
+/p1/build.xml
+
+/p2/build
+/p2/dist
+/p2/nbproject
+/p2/build.xml
+
+/p3/target
+/p3/nbproject
